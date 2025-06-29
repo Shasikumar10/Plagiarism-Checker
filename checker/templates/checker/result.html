@@ -68,9 +68,7 @@
 
     <!-- AOS JS -->
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-    <script>
-        AOS.init();
-    </script>
+    <script>AOS.init();</script>
 
     <!-- Show result after delay -->
     <script>
@@ -86,7 +84,7 @@
         const data = {
             labels: ['Plagiarised', 'Unique'],
             datasets: [{
-                data: [{{ similarity }}, {{ 100 - similarity }}],
+                data: [{{ similarity }}, {{ unique_score }}],
                 backgroundColor: ['#dc3545', '#198754'],
                 borderColor: ['#fff'],
                 borderWidth: 1
@@ -105,10 +103,7 @@
             }
         };
 
-        new Chart(
-            document.getElementById('similarityChart'),
-            config
-        );
+        new Chart(document.getElementById('similarityChart'), config);
     </script>
     {% endif %}
 </body>

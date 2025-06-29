@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: plagiarism-checker
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn plagiarism_checker.wsgi
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: plagiarism_checker.settings

@@ -27,20 +27,29 @@
 
     <div class="container mt-4">
         <div class="row">
-            <!-- Document Input -->
+            <!-- Input Section -->
             <div class="col-md-6 mb-4">
                 <div class="card shadow-sm">
                     <div class="card-header fw-bold">📄 Document Input</div>
                     <div class="card-body">
-                        <form action="/result/" method="POST">
+                        <form action="/result/" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
-                            <textarea class="form-control" name="text1" rows="10" placeholder="Paste your text here for plagiarism analysis..." required></textarea>
+                            
+                            <!-- File Upload Input -->
+                            <label class="form-label">Upload File</label>
+                            <input class="form-control mb-3" type="file" name="uploaded_file" accept=".txt,.docx,.pdf">
+                            
+                            <!-- Or Paste Text -->
+                            <label class="form-label">Or Paste Text</label>
+                            <textarea class="form-control" name="text1" rows="8" placeholder="Paste your text here for plagiarism analysis..."></textarea>
+                            
                             <button class="btn btn-primary mt-3" type="submit">Analyze</button>
                         </form>
                     </div>
                 </div>
             </div>
-            <!-- Analysis Result -->
+
+            <!-- Analysis Results -->
             <div class="col-md-6 mb-4">
                 <div class="card shadow-sm text-center">
                     <div class="card-header fw-bold">📊 Analysis Results</div>

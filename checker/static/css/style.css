@@ -1,0 +1,13 @@
+body {
+    background: #f7fafd;
+    font-family: 'Segoe UI', sans-serif;
+}
+.navbar-brand {
+    font-size: 1.5rem;
+}
+.card-header {
+    background-color: #f8f9fa;
+}
+textarea {
+    resize: none;
+}

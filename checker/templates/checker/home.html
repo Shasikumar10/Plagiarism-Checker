@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PlagiScan</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">PlagiScan</a>
+            <div class="d-flex">
+                <a class="nav-link" href="#">Features</a>
+                <a class="nav-link" href="#">Pricing</a>
+                <a class="nav-link" href="#">Sign In</a>
+                <a class="btn btn-primary ms-2" href="#">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="text-center mt-5">
+        <h1 class="fw-bold">Advanced <span class="text-primary">Plagiarism</span> Detection</h1>
+        <p class="text-muted">Ensure academic integrity with our AI-powered checker.</p>
+    </section>
+
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Document Input -->
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header fw-bold">📄 Document Input</div>
+                    <div class="card-body">
+                        <form action="/result/" method="POST">
+                            {% csrf_token %}
+                            <textarea class="form-control" name="text1" rows="10" placeholder="Paste your text here for plagiarism analysis..." required></textarea>
+                            <button class="btn btn-primary mt-3" type="submit">Analyze</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Analysis Result -->
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm text-center">
+                    <div class="card-header fw-bold">📊 Analysis Results</div>
+                    <div class="card-body">
+                        <p class="text-muted">Ready for Analysis</p>
+                        <div class="spinner-border text-primary" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

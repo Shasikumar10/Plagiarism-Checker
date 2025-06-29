@@ -1,13 +1,25 @@
+/* Base styles */
 body {
-    background: #f7fafd;
+    background: linear-gradient(to right, #f3f8ff, #f9f9f9);
     font-family: 'Segoe UI', sans-serif;
 }
+
+/* Navbar */
 .navbar-brand {
     font-size: 1.5rem;
 }
+
+/* Card header */
 .card-header {
     background-color: #f8f9fa;
 }
+
+/* Textarea */
 textarea {
     resize: none;
+}
+
+/* Card style */
+.card {
+    border-radius: 12px;
 }

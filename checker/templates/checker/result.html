@@ -10,7 +10,7 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- AOS (Animate On Scroll) CSS -->
+    <!-- AOS CSS -->
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
     <!-- Custom Style -->
@@ -39,6 +39,25 @@
                 <!-- Similarity Score -->
                 <h3 class="mt-4 text-success">Similarity: {{ similarity }}%</h3>
 
+                <!-- Readability Score -->
+                <div class="mt-3">
+                    <strong>📘 Readability Score:</strong> {{ readability }} / 100
+                    <small class="text-muted d-block">
+                        {% if readability >= 70 %}
+                            Easy to read
+                        {% elif readability >= 50 %}
+                            Fairly difficult
+                        {% else %}
+                            Difficult to read
+                        {% endif %}
+                    </small>
+                </div>
+
+                <!-- Feedback -->
+                <div class="alert alert-info mt-3">
+                    <strong>🧠 Suggestion:</strong> {{ feedback }}
+                </div>
+
                 <!-- Chart -->
                 <div class="mt-5">
                     <h5>Visual Representation</h5>
@@ -66,19 +85,19 @@
         </div>
     </div>
 
-    <!-- AOS JS -->
+    <!-- AOS Initialization -->
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script>AOS.init();</script>
 
-    <!-- Show result after delay -->
+    <!-- Delay Showing Result -->
     <script>
         setTimeout(function () {
             document.getElementById('loading').style.display = 'none';
             document.getElementById('resultContent').style.display = 'block';
-        }, 1500); // 1.5 sec delay
+        }, 1500);
     </script>
 
-    <!-- Chart rendering -->
+    <!-- Chart.js Doughnut Chart -->
     {% if similarity %}
     <script>
         const data = {

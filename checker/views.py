@@ -1,7 +1,12 @@
 import os
 from django.shortcuts import render
+from django.http import HttpResponse
 from django.core.files.storage import default_storage
-from .plagiarism_utils import calculate_similarity, extract_text_from_file
+from .plagiarism_utils import (
+    calculate_similarity,
+    extract_text_from_file,
+    highlight_matches
+)
 
 # Home page view
 def home(request):
@@ -9,27 +14,44 @@ def home(request):
 
 # Result page view
 def result(request):
+    ref_text = "This is a reference text to compare for plagiarism."
+    full_path = None  # For cleanup
+
     if request.method == 'POST':
         user_text = request.POST.get('text1')
-        full_path = None  # Initialize path for cleanup
 
         try:
-            # If file is uploaded, extract text from it
+            # Handle uploaded file
             if 'uploaded_file' in request.FILES:
                 uploaded_file = request.FILES['uploaded_file']
                 file_path = default_storage.save(uploaded_file.name, uploaded_file)
                 full_path = os.path.join(default_storage.location, file_path)
                 user_text = extract_text_from_file(full_path)
 
-            # If text exists (either from paste or file)
             if user_text:
                 similarity_score = calculate_similarity(user_text)
-                return render(request, 'checker/result.html', {'similarity': similarity_score})
+                highlighted = highlight_matches(user_text, ref_text)
+
+                return render(request, 'checker/result.html', {
+                    'similarity': similarity_score,
+                    'highlighted': highlighted
+                })
 
         finally:
-            # Delete the uploaded file after processing
             if full_path and os.path.exists(full_path):
                 os.remove(full_path)
 
-    # For GET requests or empty input
     return render(request, 'checker/result.html', {'similarity': None})
+
+# Report download view
+def download_report(request):
+    if request.method == 'POST':
+        score = request.POST.get('score')
+        highlighted = request.POST.get('highlighted_text')
+
+        content = f"Plagiarism Report\n\nSimilarity Score: {score}%\n\nHighlighted Text:\n\n{highlighted}"
+        response = HttpResponse(content, content_type='text/plain')
+        response['Content-Disposition'] = 'attachment; filename="plagiarism_report.txt"'
+        return response
+
+    return HttpResponse("Invalid request method", status=405)

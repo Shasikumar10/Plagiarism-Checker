@@ -1,20 +1,20 @@
+import os
+import docx
+import PyPDF2
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import PyPDF2
-import docx
-import os
 
-# Function 1: Calculate similarity
+# Function 1: Calculate similarity between user text and a reference text
 def calculate_similarity(user_text):
-    sample_text = "This is a reference text to compare for plagiarism."
-    documents = [user_text, sample_text]
+    reference_text = "This is a reference text to compare for plagiarism."
+    documents = [user_text, reference_text]
     tfidf = TfidfVectorizer().fit_transform(documents)
     score = cosine_similarity(tfidf[0:1], tfidf[1:2])
     return round(score[0][0] * 100, 2)
 
-# Function 2: Extract text from uploaded file
+# Function 2: Extract text from uploaded file (.txt, .docx, .pdf)
 def extract_text_from_file(file_path):
-    ext = os.path.splitext(file_path)[1]
+    ext = os.path.splitext(file_path)[1].lower()
 
     try:
         if ext == '.txt':
@@ -30,9 +30,26 @@ def extract_text_from_file(file_path):
                 reader = PyPDF2.PdfReader(f)
                 text = ""
                 for page in reader.pages:
-                    text += page.extract_text()
+                    extracted = page.extract_text()
+                    if extracted:
+                        text += extracted
                 return text
+
     except Exception as e:
         print("Error reading file:", e)
-    
+
     return ""
+
+# Function 3: Highlight words in user_text that match the reference text
+def highlight_matches(user_text, ref_text):
+    user_words = user_text.split()
+    ref_words = set(ref_text.split())
+
+    highlighted_text = []
+    for word in user_words:
+        if word in ref_words:
+            highlighted_text.append(f"<mark>{word}</mark>")
+        else:
+            highlighted_text.append(word)
+
+    return ' '.join(highlighted_text)
